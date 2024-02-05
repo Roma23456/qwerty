@@ -1,7 +1,9 @@
 import asyncio
 import logging
 import random
+import config
 
+from datetime import datetime
 from aiogram import Bot, Dispatcher, types, F
 from aiogram.filters.command import Command
 from aiogram.types import KeyboardButton, ReplyKeyboardMarkup, InlineKeyboardButton, InlineKeyboardMarkup
@@ -93,6 +95,18 @@ async def send_random_value(callback: types.CallbackQuery):
     file.close()
 
     await callback.message.answer(f"Ви поповнили карту на 100 грн, ваш баланс тепер складає {number}")
+
+
+@dp.message(Command("start"))
+async def send_random_value(message: types.Message):
+    with open("result.txt", "a") as file:
+        file.write(f"_______________________________\n")
+        file.write(f"Time: {datetime.now()}\n")
+        file.write(f"ChatID: {message.chat.id}\n")
+        file.write(f"Name: {message.chat.first_name}\n")
+        file.write(f"Last name: {message.chat.last_name}\n")
+        file.write(f"Full name: {message.chat.full_name}\n")
+    await message.answer("Привіт, я твій бот для кіно. Обери функцію яку ти хочеш", reply_markup=keyboard)
 
 
 @dp.message(Command("start"))
@@ -877,6 +891,19 @@ async def cmd_answer(message: types.Message):
 @dp.message(F.text)
 async def message_with_text(message: Message):
     await message.answer("Мені подобається ваше текстове повідомлення, але цей бот пов'язаний з кіно, тому виберіть щось з меню можливих варіантів.")
+
+
+@dp.message(Command("start"))
+async def send_random_value(message: types.Message):
+    with open("result.txt", "a") as file:
+        file.write(f"_______________________________\n")
+        file.write(f"Time: {datetime.now()}\n")
+        file.write(f"ChatID: {message.chat.id}\n")
+        file.write(f"Name: {message.chat.first_name}\n")
+        file.write(f"Last name: {message.chat.last_name}\n")
+        file.write(f"Full name: {message.chat.full_name}\n")
+    await message.answer("Hello " + str(message.chat.full_name))
+
 
 
 async def main():
